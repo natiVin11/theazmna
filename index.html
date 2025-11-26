@@ -3,138 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מערכת הפקה - דיירים מתחדשים</title>
+    <title>מערכת הפקה - א.ע דיירים מתחדשים</title>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&family=Frank+Ruhl+Libre:wght@700;900&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-    <style>
-        :root {
-    --gold: #d4af37;
-    --gold-light: #f5e6a3;
-    --dark: #0d0d0d;
-    --dark-soft: #1a1a1a;
-    --white: #fff;
-}
-
-/* רקע כללי */
-body {
-    font-family: 'Heebo', sans-serif;
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
-}
-
-/* כרטיס – רקע ההזמנה */
-.page {
-    background: #000;
-    background-image: url('https://i.imgur.com/9j8rhB2.png'); /* רקע זהב שחור */
-    background-size: cover;
-    background-position: center;
-    border: 3px solid var(--gold);
-    box-shadow: 0 0 40px rgba(212, 175, 55, 0.4);
-    border-radius: 16px;
-}
-
-/* HEADER יוקרתי */
-.page-header {
-    background: rgba(0,0,0,0.8);
-    padding: 25px 10px;
-    border-bottom: 3px solid var(--gold);
-}
-
-.main-title {
-    font-size: 3rem;
-    font-weight: 900;
-    color: var(--gold);
-    text-shadow: 0 0 10px rgba(212,175,55,0.5);
-    letter-spacing: 2px;
-}
-
-/* סמל */
-.logo-container {
-    background: rgba(255,255,255,0.1);
-    padding: 10px 20px;
-    border-radius: 10px;
-    border: 1px solid var(--gold);
-}
-
-/* טקסט מרכזי */
-.page-body {
-    background: rgba(0,0,0,0.65);
-    color: var(--white);
-    padding: 40px;
-    border-radius: 0 0 16px 16px;
-}
-
-/* באנר יעד */
-.target-banner {
-    background: var(--gold);
-    color: #000;
-    padding: 10px 30px;
-    border-radius: 40px;
-    font-weight: 700;
-    font-size: 1.2rem;
-    box-shadow: 0 0 20px rgba(212,175,55,0.6);
-}
-
-/* כרטיסי מידע */
-.detail-card {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--gold);
-    color: var(--white);
-    border-radius: 14px;
-    padding: 18px;
-    box-shadow: inset 0 0 15px rgba(212,175,55,0.15);
-}
-
-.detail-label {
-    font-size: 0.95rem;
-    color: var(--gold-light);
-    font-weight: 600;
-}
-
-/* אזור סדר יום */
-.agenda-section {
-    background: rgba(255,255,255,0.05);
-    border-right: 3px solid var(--gold);
-    padding: 25px;
-    border-radius: 12px;
-}
-
-.agenda-title {
-    font-size: 1.8rem;
-    font-weight: 900;
-    color: var(--gold);
-    border-bottom: 2px solid var(--gold);
-    padding-bottom: 8px;
-}
-
-/* תבליטים */
-.agenda-list li::before {
-    content: "★";
-    color: var(--gold);
-}
-
-/* Footer */
-.page-footer {
-    background: rgba(0,0,0,0.85);
-    border-top: 3px solid var(--gold);
-    padding: 20px;
-    color: var(--gold-light);
-}
-
-.member-badge {
-    background: rgba(212,175,55,0.12);
-    border: 1px solid var(--gold);
-    border-radius: 20px;
-    padding: 6px 15px;
-    color: var(--gold-light);
-}
-</style>
-</head>
+    <link rel="stylesheet" href="style.css"></head>
 <body>
 
 <div class="editor-panel">
@@ -191,8 +63,10 @@ body {
     <div class="control-group">
         <label style="margin-top:0;">תאריך המפגש</label>
         <input type="text" id="inDate">
+
         <label>שעת המפגש</label>
         <input type="text" id="inTime">
+
         <label>מיקום המפגש</label>
         <input type="text" id="inAddress">
     </div>
@@ -211,11 +85,12 @@ body {
     </div>
     <div class="committee-list" id="membersListContainer"></div>
 
-    <button class="print-btn" onclick="downloadPDF()">הורד כ-PDF</button>
+    <button class="print-btn" onclick="window.print()">הדפסה / שמירה (PDF)</button>
 </div>
 
 <div class="preview-area">
     <div id="page" class="page type-invite">
+
         <div class="page-header">
             <div class="logo-container">
                 <img src="logo.png" class="logo-img" alt="Logo" onerror="this.style.display='none'">
@@ -224,8 +99,11 @@ body {
         </div>
 
         <div class="page-body">
+
             <div id="targetBanner" class="target-banner"></div>
+
             <div class="intro-text" id="outBody"></div>
+
             <div class="details-grid">
                 <div class="detail-card">
                     <div class="icon-box">📅</div>
@@ -254,34 +132,11 @@ body {
             <div class="footer-title" id="lblContact"></div>
             <div class="committee-grid" id="outCommittee"></div>
         </div>
+
     </div>
 </div>
 
 <script>
-    // --- פונקציית הורדת PDF ---
-    function downloadPDF() {
-        // בחירת האלמנט להדפסה (העמוד כולו)
-        const element = document.getElementById('page');
-        
-        // זיהוי הפורמט הנבחר (A4/A5/A3)
-        const fmt = document.querySelector('input[name="fmt"]:checked').value;
-        let pdfFormat = 'a4';
-        if (fmt === 'type-flyer') pdfFormat = 'a5';
-        if (fmt === 'type-sign') pdfFormat = 'a3';
-
-        // הגדרות להמרה
-        const opt = {
-            margin:       0, // השוליים מוגדרים ב-CSS
-            filename:     'renewal_invite.pdf',
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true }, // איכות גבוהה, CORS לתמונות
-            jsPDF:        { unit: 'mm', format: pdfFormat, orientation: 'portrait' }
-        };
-
-        // ביצוע ההמרה וההורדה
-        html2pdf().set(opt).from(element).save();
-    }
-
     // --- נתונים וטקסטים ---
     const contentData = {
         he: {
@@ -368,7 +223,7 @@ body {
             const div = document.createElement('div');
             div.className = 'committee-item';
             div.innerHTML = `<span>${m.name}</span>
-                             <button class="btn-remove" onclick="removeMember(${i})">✕</button>`;
+                                 <button class="btn-remove" onclick="removeMember(${i})">✕</button>`;
             list.appendChild(div);
         });
     }
@@ -464,4 +319,3 @@ body {
 </script>
 </body>
 </html>
-
