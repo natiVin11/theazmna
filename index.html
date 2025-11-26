@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>מערכת הפקה - קבוצת דיירים מתחדשים</title>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&family=Frank+Ruhl+Libre:wght@700;900&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="style.css"></head>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
 
 <div class="editor-panel">
     <div class="editor-header">
         <h2>מערכת הפקה</h2>
-        <div style="font-size:0.9rem; color:#666;">א.ע דיירים מתחדשים</div>
+        <div style="font-size:0.9rem; color:#7f8c8d;">א.ע דיירים מתחדשים</div>
     </div>
 
     <div class="control-group">
-        <label>1. בחר שפה / Выберите язык</label>
+        <label>1. שפה / Язык</label>
         <select id="langSelect" onchange="applyTemplate()">
             <option value="he">עברית</option>
             <option value="ru">Русский</option>
@@ -24,15 +24,15 @@
     </div>
 
     <div class="control-group">
-        <label>2. בחר סוג אירוע</label>
+        <label>2. סוג אירוע</label>
         <select id="eventSelect" onchange="applyTemplate()">
-            <option value="lawyer">מינוי עורך דין מטעם הדיירים</option>
+            <option value="lawyer">מינוי עורך דין דיירים</option>
             <option value="assembly">אסיפת דיירים כללית</option>
         </select>
     </div>
 
     <div class="control-group">
-        <label>3. פורמט הדפסה</label>
+        <label>3. פורמט</label>
         <div class="format-selector">
             <div class="format-option">
                 <input type="radio" id="fmtInvite" name="fmt" value="type-invite" checked onchange="updateFormat()">
@@ -49,51 +49,57 @@
         </div>
     </div>
 
-    <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
-
-    <label style="color: var(--accent-blue);">כתובות יעד (אופציונלי):</label>
-    <input type="text" id="inTargetAddress" placeholder="למשל: דיירי בניין 10-12">
-
-    <label>כותרת ראשית (קבוע)</label>
-    <input type="text" id="inTitle" readonly>
-
-    <label>טקסט פתיחה (קבוע)</label>
-    <textarea id="inBody" style="height:60px;" readonly></textarea>
+    <hr style="border:0; border-top:1px solid #eee; margin: 20px 0;">
 
     <div class="control-group">
-        <label style="margin-top:0;">תאריך המפגש</label>
-        <input type="text" id="inDate">
-
-        <label>שעת המפגש</label>
-        <input type="text" id="inTime">
-
-        <label>מיקום המפגש</label>
-        <input type="text" id="inAddress">
+        <label>כתובות יעד (אופציונלי)</label>
+        <input type="text" id="inTargetAddress" placeholder="למשל: דיירי בניין 10-14">
     </div>
 
-    <label>כותרת סדר יום (קבוע)</label>
-    <input type="text" id="inProgramTitle" readonly>
-
-    <label>סעיפי סדר יום (קבוע)</label>
-    <textarea id="inProgram" style="height:100px;" readonly></textarea>
-
-    <label>נציגי ועד</label>
-    <div style="display:flex; gap:5px; margin-bottom:5px;">
-        <input type="text" id="newMemberName" placeholder="שם">
-        <input type="tel" id="newMemberPhone" placeholder="טלפון">
-        <button class="btn-add" onclick="addMember()">+</button>
+    <div class="control-group">
+        <label>כותרת (קבוע)</label>
+        <input type="text" id="inTitle" readonly style="background:#f9f9f9; color:#999;">
     </div>
-    <div class="committee-list" id="membersListContainer"></div>
 
-    <button class="print-btn" onclick="window.print()">הדפסה / שמירה (PDF)</button>
+    <div class="control-group">
+        <label>פתיחה (קבוע)</label>
+        <textarea id="inBody" style="height:60px; background:#f9f9f9; color:#999;" readonly></textarea>
+    </div>
+
+    <div class="control-group" style="background: #f0f8ff; padding: 15px; border-radius: 8px; border: 1px solid #d6e9f9;">
+        <label style="color:#2980b9; margin-top:0;">פרטי המפגש (לעריכה):</label>
+        <input type="text" id="inDate" placeholder="תאריך" style="margin-bottom:5px;">
+        <input type="text" id="inTime" placeholder="שעה" style="margin-bottom:5px;">
+        <input type="text" id="inAddress" placeholder="מיקום">
+    </div>
+
+    <input type="hidden" id="inProgramTitle">
+    <textarea id="inProgram" style="display:none;"></textarea>
+
+    <div class="control-group">
+        <label>נציגי ועד</label>
+        <div style="display:flex; gap:5px;">
+            <input type="text" id="newMemberName" placeholder="שם">
+            <input type="tel" id="newMemberPhone" placeholder="טלפון">
+        </div>
+        <button class="btn-add" onclick="addMember()">הוסף נציג +</button>
+        <div class="committee-list" id="membersListContainer"></div>
+    </div>
+
+    <div class="mobile-controls" style="display:none; margin-top:20px;">
+        <button id="btnGenerate" style="background:#34495e; color:white; width:100%;">הצג תצוגה מקדימה</button>
+        <button id="btnMobileSave" style="background:#27ae60; color:white; width:100%; margin-top:10px; display:none;">שמור / הורד PDF</button>
+    </div>
+
+    <button class="print-btn" onclick="window.print()">הדפסה / שמירה PDF</button>
 </div>
 
-<div class="preview-area">
+<div class="preview-area" id="previewArea">
     <div id="page" class="page type-invite">
 
         <div class="page-header">
             <div class="logo-container">
-                <img src="logo.png" class="logo-img" alt="Logo" onerror="this.style.display='none'">
+                <img src="logo.png" alt="Logo" onerror="this.style.display='none'">
             </div>
             <h1 class="main-title" id="outTitle"></h1>
         </div>
@@ -126,6 +132,7 @@
                 <div class="agenda-title" id="outProgramTitle"></div>
                 <ul class="agenda-list" id="outProgram"></ul>
             </div>
+
         </div>
 
         <div class="page-footer">
@@ -136,187 +143,6 @@
     </div>
 </div>
 
-<script>
-    // --- נתונים וטקסטים ---
-    const contentData = {
-        he: {
-            targetPrefix: "לכבוד בעלי הדירות: ",
-            lblDate: "מתי?",
-            lblTime: "שעה",
-            lblAddress: "היכן?",
-            lblContact: "לפרטים נוספים - נציגות הוועד",
-            lawyer: {
-                title: "הזמנה לכנס מינוי עורך דין",
-                body: "בעלי דירות יקרים, אנו מתכבדים להזמינכם לאסיפה קריטית לבחירת הייצוג המשפטי שילווה אותנו בבטחה בפרויקט.",
-                defaultDate: "יום ראשון, 07/12/2025",
-                defaultTime: "18:30 (נא לדייק)",
-                defaultAddress: "מרכז רחל, קומה 2 (רח' צפניה 10, אשקלון)",
-                programTitle: "נושאים על סדר היום",
-                program: "סקירת תהליך המינוי ושקיפות ההליך.\nהיכרות עם המועמדים הסופיים לייצוג.\nפאנל שאלות ותשובות פתוח.\nהצבעה ומינוי עורך הדין בפועל."
-            },
-            assembly: {
-                title: "הזמנה לאסיפת דיירים",
-                body: "שלום רב, אנו שמחים להזמינכם למפגש עדכון והתקדמות בנוגע לפרויקט ההתחדשות העירונית בבנייננו.",
-                defaultDate: "19.05.2024",
-                defaultTime: "18:00 בדיוק",
-                defaultAddress: "רח' ההסתדרות 7, אשקלון",
-                programTitle: "על סדר היום",
-                program: "עדכון סטטוס תכנוני - מתחם פינוי בינוי.\nהיכרות עם המנהלת: א.ע דיירים מתחדשים.\nבחירת ומינוי נציגות דיירים מובילה.\nקביעת סמכויות והגדרת יעדים."
-            }
-        },
-        ru: {
-            targetPrefix: "Уважаемые жильцы: ",
-            lblDate: "Дата",
-            lblTime: "Время",
-            lblAddress: "Место",
-            lblContact: "Контакты комитета",
-            lawyer: {
-                title: "Собрание: Выбор Адвоката",
-                body: "Уважаемые собственники, приглашаем вас на собрание для выбора юридического представителя, который защитит наши права.",
-                defaultDate: "Воскресенье, 07/12/2025",
-                defaultTime: "18:30",
-                defaultAddress: "Центр Рахель, 2-й этаж (Ул. Цфания 10)",
-                programTitle: "Повестка дня",
-                program: "Обзор процесса назначения адвоката.\nЗнакомство с кандидатами.\nВопросы и ответы.\nГолосование и назначение представителя."
-            },
-            assembly: {
-                title: "Общее собрание жильцов",
-                body: "Мы рады пригласить вас на встречу, посвященную обновлению нашего дома. Ваше присутствие важно.",
-                defaultDate: "19.05.2024",
-                defaultTime: "18:00",
-                defaultAddress: "Ул. Ха-Гистадрут 7, Ашкелон",
-                programTitle: "В программе",
-                program: "Статус проекта реновации (Пинуй-Бинуй).\nЗнакомство с компанией 'А.Е. Renewing Tenants'.\nВыбор представителей жильцов.\nОпределение полномочий и целей."
-            }
-        }
-    };
-
-    // --- ניהול נציגים ---
-    let committeeMembers = JSON.parse(localStorage.getItem('committeeMembers')) || [];
-
-    function addMember() {
-        const name = document.getElementById('newMemberName').value;
-        const phone = document.getElementById('newMemberPhone').value;
-        if (name && phone) {
-            committeeMembers.push({ name, phone });
-            saveAndRenderMembers();
-            document.getElementById('newMemberName').value = '';
-            document.getElementById('newMemberPhone').value = '';
-        }
-    }
-
-    function removeMember(index) {
-        committeeMembers.splice(index, 1);
-        saveAndRenderMembers();
-    }
-
-    function saveAndRenderMembers() {
-        localStorage.setItem('committeeMembers', JSON.stringify(committeeMembers));
-        renderMembersEditor();
-        updatePreview();
-    }
-
-    function renderMembersEditor() {
-        const list = document.getElementById('membersListContainer');
-        list.innerHTML = '';
-        committeeMembers.forEach((m, i) => {
-            const div = document.createElement('div');
-            div.className = 'committee-item';
-            div.innerHTML = `<span>${m.name}</span>
-                                 <button class="btn-remove" onclick="removeMember(${i})">✕</button>`;
-            list.appendChild(div);
-        });
-    }
-
-    // --- לוגיקה ראשית ---
-    function applyTemplate() {
-        const lang = document.getElementById('langSelect').value;
-        const eventType = document.getElementById('eventSelect').value;
-        const page = document.getElementById('page');
-
-        const data = contentData[lang][eventType];
-        const labels = contentData[lang];
-
-        if (lang === 'ru') {
-            document.documentElement.setAttribute('dir', 'ltr');
-            page.classList.add('lang-ru');
-        } else {
-            document.documentElement.setAttribute('dir', 'rtl');
-            page.classList.remove('lang-ru');
-        }
-
-        document.getElementById('inTitle').value = data.title;
-        document.getElementById('inBody').value = data.body;
-        document.getElementById('inProgramTitle').value = data.programTitle;
-        document.getElementById('inProgram').value = data.program;
-
-        document.getElementById('inDate').value = data.defaultDate;
-        document.getElementById('inTime').value = data.defaultTime;
-        document.getElementById('inAddress').value = data.defaultAddress;
-
-        document.getElementById('lblDate').innerText = labels.lblDate;
-        document.getElementById('lblTime').innerText = labels.lblTime;
-        document.getElementById('lblAddress').innerText = labels.lblAddress;
-        document.getElementById('lblContact').innerText = labels.lblContact;
-
-        updatePreview();
-    }
-
-    function updatePreview() {
-        document.getElementById('outTitle').innerText = document.getElementById('inTitle').value;
-        document.getElementById('outBody').innerText = document.getElementById('inBody').value;
-        document.getElementById('outProgramTitle').innerText = document.getElementById('inProgramTitle').value;
-
-        document.getElementById('outDate').innerText = document.getElementById('inDate').value;
-        document.getElementById('outTime').innerText = document.getElementById('inTime').value;
-        document.getElementById('outAddress').innerText = document.getElementById('inAddress').value;
-
-        const targetVal = document.getElementById('inTargetAddress').value;
-        const targetBanner = document.getElementById('targetBanner');
-        const lang = document.getElementById('langSelect').value;
-
-        if (targetVal.trim() !== "") {
-            targetBanner.style.display = "table";
-            targetBanner.innerText = contentData[lang].targetPrefix + targetVal;
-        } else {
-            targetBanner.style.display = "none";
-        }
-
-        const list = document.getElementById('outProgram');
-        list.innerHTML = '';
-        const lines = document.getElementById('inProgram').value.split('\n');
-        lines.forEach(line => {
-            if(line.trim()) {
-                const li = document.createElement('li');
-                li.innerText = line;
-                list.appendChild(li);
-            }
-        });
-
-        const committeeContainer = document.getElementById('outCommittee');
-        committeeContainer.innerHTML = '';
-        committeeMembers.forEach(m => {
-            const badge = document.createElement('div');
-            badge.className = 'member-badge';
-            badge.innerText = `${m.name} | ${m.phone}`;
-            committeeContainer.appendChild(badge);
-        });
-    }
-
-    function updateFormat() {
-        const selectedType = document.querySelector('input[name="fmt"]:checked').value;
-        const page = document.getElementById('page');
-        page.classList.remove('type-invite', 'type-flyer', 'type-sign');
-        page.classList.add(selectedType);
-    }
-
-    document.querySelectorAll('input, textarea').forEach(el => {
-        el.addEventListener('input', updatePreview);
-    });
-
-    renderMembersEditor();
-    applyTemplate();
-</script>
+<script src="script.js"></script>
 </body>
 </html>
-
