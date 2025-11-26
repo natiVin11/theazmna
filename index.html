@@ -36,6 +36,8 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            /* שינוי למובייל: מונע כיווץ בדסקטופ, משתנה במדיה קוורי למטה */
+            flex-shrink: 0; 
         }
 
         .editor-header {
@@ -147,6 +149,8 @@
             position: relative;
             display: flex;
             flex-direction: column;
+            /* כדי למנוע גלישה בהדפסה או במובייל */
+            margin: 0 auto; 
         }
 
         /* --- עיצוב Header --- */
@@ -295,11 +299,61 @@
         .type-sign .main-title { font-size: 4rem; }
         .type-sign .icon-box { font-size: 2.5rem; }
 
+        /* --- התאמות למובייל (רספונסיביות) --- */
+        @media screen and (max-width: 900px) {
+            body {
+                flex-direction: column; /* מסדר את האלמנטים אחד מתחת לשני */
+                height: auto;
+                overflow-y: auto; /* מאפשר גלילה בבודי */
+            }
+
+            .editor-panel {
+                width: 100%; /* העורך תופס את כל הרוחב */
+                height: auto;
+                box-sizing: border-box; /* שהפדינג לא יחרוג */
+                box-shadow: none;
+                border-bottom: 2px solid var(--accent-blue);
+            }
+
+            .preview-area {
+                width: 100%;
+                padding: 10px;
+                background: #555;
+                /* מאפשר גלילה אופקית כדי לראות את כל הדף */
+                overflow-x: auto; 
+                display: block; /* שינוי מ-flex כדי לאפשר גלילה חלקה */
+                white-space: nowrap; /* מונע שבירת שורות לא רצויה */
+            }
+
+            /* הקטנה ויזואלית קלה של התצוגה במובייל כדי שתהיה נוחה יותר */
+            .page {
+                display: inline-block; /* כדי שה-white-space יעבוד עם גלילה */
+                transform-origin: top left;
+                /* אפשר להוסיף scale אם רוצים להקטין, אבל גלילה עדיפה לאיכות */
+                margin: 0 auto;
+                white-space: normal; /* מחזיר את הטקסט בפנים לנורמלי */
+            }
+            
+            /* התאמה לפלאייר ושלט במובייל - הקטנה קלה כדי שיראו יותר מהמסך */
+             .type-invite, .type-flyer, .type-sign {
+                 transform: scale(0.65); /* הקטנה לתצוגה בלבד */
+                 transform-origin: top center;
+                 margin-bottom: -30%; /* תיקון השוליים שנוצרים מההקטנה */
+             }
+        }
+
         @media print {
-            body { background: white; display: block; height: auto; }
+            body { background: white; display: block; height: auto; overflow: visible; }
             .editor-panel { display: none; }
             .preview-area { padding: 0; display: block; overflow: visible; }
-            .page { box-shadow: none; margin: 0; page-break-after: always; height: auto; }
+            .page { 
+                box-shadow: none; 
+                margin: 0; 
+                page-break-after: always; 
+                height: auto; 
+                transform: none !important; /* ביטול הקטנה בהדפסה */
+                display: flex; /* החזרה ל-flex להדפסה תקינה */
+            }
             @page { margin: 0; }
         }
     </style>
@@ -520,7 +574,7 @@
             const div = document.createElement('div');
             div.className = 'committee-item';
             div.innerHTML = `<span>${m.name}</span>
-                                 <button class="btn-remove" onclick="removeMember(${i})">✕</button>`;
+                             <button class="btn-remove" onclick="removeMember(${i})">✕</button>`;
             list.appendChild(div);
         });
     }
